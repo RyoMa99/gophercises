@@ -1,8 +1,8 @@
 package main
 
 import (
+	"encoding/csv"
 	"fmt"
-	"io"
 	"os"
 )
 
@@ -10,17 +10,18 @@ func main() {
 	fmt.Println("hello")
 }
 
-func readFile(filename string) ([]byte, error) {
+func readCSVFile(filename string) ([][]string, error) {
 	file, err := os.Open(filename)
 	if err != nil {
 		return nil, err
 	}
 	defer file.Close()
 
-	data, err := io.ReadAll(file)
+	reader := csv.NewReader(file)
+	rows, err := reader.ReadAll()
 	if err != nil {
 		return nil, err
 	}
 
-	return data, nil
+	return rows, nil
 }
